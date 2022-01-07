@@ -1,0 +1,60 @@
+service:
+  name: nest-service
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-plugin-optimize
+  - serverless-offline
+
+custom:
+  stage: ${opt:stage, 'local'}
+
+  # Load config
+  config: ${file(./src/common/config.yml):${self:custom.stage}, file(src/common/config.yml):local}
+  apiGateway: ${file(./src/common/config.yml):apiGateway.${self:custom.stage}}
+
+  region: ${self:custom.config.deploy.region}
+  accountId: ${self:custom.config.deploy.accountId}
+
+  tags:
+    Service: ${self:service}
+    Product: tripws
+    Team: platform
+
+  basePath: ''
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${self:custom.stage}
+  region: ${self:custom.region}
+  endpointType: regional
+
+  apiName: ${self:service}
+  stackName: ${self:service}-${self:custom.stage}
+  deploymentBucket:
+    name: ${self:custom.config.deploy.deploymentBucket}
+    maxPreviousDeploymentArtifacts: ${self:custom.config.deploy.pruneVersion}
+    blockPublicAccess: true
+  deploymentPrefix: ${self:custom.config.deploy.deploymentPrefix}
+
+  memorySize: 256
+  timeout: 30
+  versionFunctions: true
+  logRetentionInDays: 1
+
+  iamRoleStatements: ${file(./src/common/iam-roles.yml):default}
+  environment: ${file(./environments.yml):${self:custom.stage}, file(./environments.yml):default}
+
+functions: ${file(./functions.yml)}
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  exclude:
+    - README.md
+    - .serverless/**
+    - .webpack/**
+    - test/**
+
+frameworkVersion: ">=2"

@@ -1,0 +1,35 @@
+# Custom domains (API Gateway)
+apiGateway:
+  local:
+    domainName: localhost
+    certificateName: nestjs.api
+    endpointType: REGIONAL
+
+## LOCAL_ENVS
+local:
+  # Deploy vars
+  deploy:
+    deploymentBucket: 'nestjs.api'
+    deploymentPrefix: rental/${self:custom.stage}
+    docsBucket: 'nestjs.api'
+    region: 'us-east-1'
+    pruneVersion: 1
+    accountId: 666758954926
+    jwtSecret: 'S@%$yn%Q%c8N55{~{'
+    deletionPolicy: 'Delete'
+
+  # Disable/Enable lambdas to run in background
+  jobsEnabled: true
+
+  # Base SQS Queue URL
+  sqsQueue: http://${env:SQS_HOST, "127.0.0.1"}:${env:SQS_PORT, 9324}/queue/
+
+  ssm:
+    mongodb:
+      host: 'mongodb://localhost/nest-api'
+      port: '27017'
+
+    # SQS Credentials
+    sqs:
+      host: ${env:SQS_HOST, "127.0.0.1"}
+      port: ${env:SQS_PORT, "9324"}

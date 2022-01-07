@@ -1,0 +1,5 @@
+default:
+  SLS_STAGE: ${self:custom.stage}
+  MONGODB_HOST: ${self:custom.config.ssm.mongodb.host}
+  JWT_SECRET: ${self:custom.config.deploy.jwtSecret}
+  SQS_QUEUE: ${self:custom.config.sqsQueue}

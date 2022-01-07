@@ -1,0 +1,23 @@
+nest-service:
+  name: nest-${self:custom.stage}
+  description: Nest API
+  handler: src/lambda.handler
+  memorySize: 256
+  timeout: 15
+  events:
+    - http:
+        path: ${self:custom.basePath, 'api/'}{proxy+}
+        method: post
+        cors: true
+    - http:
+        path: ${self:custom.basePath, 'api/'}{proxy+}
+        method: get
+        cors: true
+    - http:
+        path: ${self:custom.basePath, 'api/'}{proxy+}
+        method: patch
+        cors: true
+    - http:
+        path: ${self:custom.basePath, 'api/'}{proxy+}
+        method: delete
+        cors: true
