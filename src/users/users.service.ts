@@ -4,14 +4,27 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import SQS from '../common/sqs';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
-  }
-  create(createUserDto: CreateUserDto) {
-    const user = new this.userModel(createUserDto);
-    return user.save();
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  async create(createUserDto: CreateUserDto) {
+    try {
+      const queueUrl = `${process.env.SQS_QUEUE}${process.env.QUEUE_TW_SQS}`;
+
+      const user = new this.userModel(createUserDto);
+      const result = await user.save();
+      const message = {
+        id: result._id,
+        name: result.name,
+        email: result.email,
+      };
+      await SQS.sendToQueue(message, queueUrl);
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 
   findAll() {

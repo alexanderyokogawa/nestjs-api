@@ -9,7 +9,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     UsersModule,
-    MongooseModule.forRoot(process.env.MONGODB),
+    MongooseModule.forRoot(process.env.MONGODB_HOST),
   ],
   controllers: [],
   providers: [],

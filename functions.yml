@@ -6,18 +6,18 @@ nest-service:
   timeout: 15
   events:
     - http:
-        path: ${self:custom.basePath, 'api/'}{proxy+}
+        path: ${self:custom.basePath, '/'}{proxy+}
         method: post
         cors: true
     - http:
-        path: ${self:custom.basePath, 'api/'}{proxy+}
+        path: ${self:custom.basePath, '/'}{proxy+}
         method: get
         cors: true
     - http:
-        path: ${self:custom.basePath, 'api/'}{proxy+}
+        path: ${self:custom.basePath, '/'}{proxy+}
         method: patch
         cors: true
     - http:
-        path: ${self:custom.basePath, 'api/'}{proxy+}
+        path: ${self:custom.basePath, '/'}{proxy+}
         method: delete
         cors: true

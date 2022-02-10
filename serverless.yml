@@ -2,19 +2,30 @@ service:
   name: nest-service
 
 plugins:
+  - serverless-offline-sqs
   - serverless-plugin-typescript
   - serverless-plugin-optimize
   - serverless-offline
 
 custom:
   stage: ${opt:stage, 'local'}
-
-  # Load config
-  config: ${file(./src/common/config.yml):${self:custom.stage}, file(src/common/config.yml):local}
-  apiGateway: ${file(./src/common/config.yml):apiGateway.${self:custom.stage}}
-
   region: ${self:custom.config.deploy.region}
   accountId: ${self:custom.config.deploy.accountId}
+
+  # Load config
+  config: ${file(./config/config.yml):${self:custom.stage}, file(./config/config.yml):local}
+  apiGateway: ${file(./config/config.yml):apiGateway.${self:custom.stage}}
+
+  serverless-offline:
+    host: 0.0.0.0
+    port: ${env:API_PORT, 4000}
+
+  serverless-offline-sqs:
+    autoCreate: true
+    skipCacheInvalidation: false
+    apiVersion: "2012-11-05"
+    endpoint: http://${env:SQS_HOST, "localhost"}:${env:SQS_PORT, 9324}
+    region: us-east-1
 
   tags:
     Service: ${self:service}
@@ -43,10 +54,13 @@ provider:
   versionFunctions: true
   logRetentionInDays: 1
 
-  iamRoleStatements: ${file(./src/common/iam-roles.yml):default}
+  iamRoleStatements: ${file(./config/iam-roles.yml):default}
   environment: ${file(./environments.yml):${self:custom.stage}, file(./environments.yml):default}
 
 functions: ${file(./functions.yml)}
+
+resources:
+  - ${file(./resources/queue-user.sqs.yml)}
 
 package:
   individually: true

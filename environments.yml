@@ -3,3 +3,4 @@ default:
   MONGODB_HOST: ${self:custom.config.ssm.mongodb.host}
   JWT_SECRET: ${self:custom.config.deploy.jwtSecret}
   SQS_QUEUE: ${self:custom.config.sqsQueue}
+  QUEUE_TW_SQS: queue-${self:custom.stage}-tw

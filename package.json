@@ -42,6 +42,7 @@
     "prettier": "^2.2.1",
     "serverless-domain-manager": "^5.1.5",
     "serverless-offline": "^8.0.0",
+    "serverless-offline-sqs": "^6.0.0",
     "serverless-plugin-optimize": "^4.2.1-rc.1",
     "serverless-plugin-typescript": "^1.1.9",
     "supertest": "^6.1.3",

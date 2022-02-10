@@ -1,0 +1,5 @@
+Resources:
+  QueueTwSQS:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: queue-${self:custom.stage}-user
