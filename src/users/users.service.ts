@@ -11,7 +11,7 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
   async create(createUserDto: CreateUserDto) {
     try {
-      const queueUrl = `${process.env.SQS_QUEUE}${process.env.QUEUE_TW_SQS}`;
+      const queueUrl = `${process.env.SQS_QUEUE}${process.env.QUEUE_USER_SQS}`;
 
       const user = new this.userModel(createUserDto);
       const result = await user.save();
