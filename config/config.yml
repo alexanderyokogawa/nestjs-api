@@ -10,7 +10,7 @@ local:
   # Deploy vars
   deploy:
     deploymentBucket: 'nestjs.api'
-    deploymentPrefix: rental/${self:custom.stage}
+    deploymentPrefix: nestjs.api/${self:custom.stage}
     docsBucket: 'nestjs.api'
     region: 'us-east-1'
     pruneVersion: 1
