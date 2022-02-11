@@ -12,10 +12,10 @@ local:
     deploymentBucket: 'nestjs.api'
     deploymentPrefix: nestjs.api/${self:custom.stage}
     docsBucket: 'nestjs.api'
-    region: 'us-east-1'
+    region: ${env:AWS_REGION}
     pruneVersion: 1
-    accountId: 666758954926
-    jwtSecret: 'S@%$yn%Q%c8N55{~{'
+    accountId: ${env:AWS_ACCOUNT_ID}
+    jwtSecret: ${env:JWT_SECRET}
     deletionPolicy: 'Delete'
 
   # Disable/Enable lambdas to run in background
@@ -26,8 +26,8 @@ local:
 
   ssm:
     mongodb:
-      host: 'mongodb://localhost/nest-api'
-      port: '27017'
+      host: ${env:MONGO_HOST, "mongodb.local"}
+      port: ${env:MONGO_PORT, "27017"}
 
     # SQS Credentials
     sqs:
